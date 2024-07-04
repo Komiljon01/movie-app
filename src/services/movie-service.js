@@ -29,9 +29,10 @@ class MovieService {
   };
 
   getDetailedMovie = async (id) => {
-    return await this.getResource(
+    const movie = await this.getResource(
       `${this._apiBase}/movie/${id}?${this._apiLang}&${this._apiKey}`
     );
+    return this._transferMovie(movie);
   };
 
   getRandomMovie = async () => {

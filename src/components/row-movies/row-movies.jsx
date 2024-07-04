@@ -7,14 +7,13 @@ import React from "react";
 import MovieService from "../../services/movie-service";
 
 class RowMovies extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false,
-      movies: [],
-    };
-    this.movieService = new MovieService();
-  }
+  state = {
+    open: false,
+    movies: [],
+    movieID: null,
+  };
+  
+  movieService = new MovieService();
 
   componentDidMount() {
     this.getTrandingMovies();
@@ -25,12 +24,16 @@ class RowMovies extends React.Component {
       .getTrandingMovies()
       .then((res) => this.setState({ movies: res }));
 
-  onToggleOpen = () => {
-    this.setState(({ open }) => ({ open: !open }));
+  onOpen = (id) => {
+    this.setState({ open: true, movieID: id });
+  };
+
+  onClose = () => {
+    this.setState({ open: false });
   };
 
   render() {
-    const { open, movies } = this.state;
+    const { open, movies, movieID } = this.state;
 
     return (
       <div className="rowmovies">
@@ -45,16 +48,12 @@ class RowMovies extends React.Component {
         </div>
         <div className="rowmovies__lists">
           {movies.map((movie) => (
-            <RowMoviesItem
-              key={movie.id}
-              movie={movie}
-              onToggleOpen={this.onToggleOpen}
-            />
+            <RowMoviesItem key={movie.id} movie={movie} onOpen={this.onOpen} />
           ))}
         </div>
 
-        <Modal open={open} onClose={this.onToggleOpen}>
-          <MovieInfo />
+        <Modal open={open} onClose={this.onClose}>
+          <MovieInfo movieID={movieID} />
         </Modal>
       </div>
     );

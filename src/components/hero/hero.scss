@@ -39,6 +39,11 @@
     button {
       width: fit-content;
     }
+
+    &-buttons {
+      display: flex;
+      gap: 20px;
+    }
   }
 
   &__movie {
