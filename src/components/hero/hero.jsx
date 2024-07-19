@@ -33,9 +33,9 @@ class Hero extends React.Component {
   render() {
     const { movie, loading, error } = this.state;
 
-    const loadingContent = loading && <Loader />;
-    const errorContent = error && <Error />;
-    const content = !(loading || error) && <Content movie={movie} />;
+    const loadingContent = loading ? <Loader /> : null;
+    const errorContent = error ? <Error /> : null;
+    const content = !(loading || error) ? <Content movie={movie} /> : null;
 
     return (
       <section className="hero">

@@ -31,5 +31,14 @@
       background-color: transparent;
       border-color: rgba(255, 255, 255, 0.1);
     }
+
+    &:disabled {
+      background-color: lightgray;
+      cursor: not-allowed;
+
+      &:hover {
+        color: #000;
+      }
+    }
   }
 }

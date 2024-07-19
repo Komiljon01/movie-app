@@ -1,13 +1,16 @@
 import Hero from "../hero/hero";
 import Navbar from "../navbar/navbar";
 import RowMovies from "../row-movies/row-movies";
+import ErrorBoundary from "../error-boundary/error-boundary";
 
 function App() {
   return (
     <div className="app">
       <Navbar />
       <Hero />
-      <RowMovies />
+      <ErrorBoundary>
+        <RowMovies />
+      </ErrorBoundary>
     </div>
   );
 }
