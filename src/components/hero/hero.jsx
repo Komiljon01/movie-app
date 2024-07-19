@@ -1,7 +1,9 @@
 import "./hero.scss";
 import "../../styles/button.scss";
-
 import React from "react";
+import PropTypes from "prop-types";
+
+// Components
 import MovieService from "../../services/movie-service";
 import Loader from "../loader/loader";
 import Error from "../error/error";
@@ -84,3 +86,7 @@ const Content = ({ movie }) => (
     </div>
   </>
 );
+
+Content.propTypes = {
+  movie: PropTypes.object,
+};

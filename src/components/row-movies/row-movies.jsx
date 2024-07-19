@@ -1,9 +1,12 @@
-import RowMoviesItem from "../row-movies-item/row-movies-item";
 import "./row-movies.scss";
 import "react-responsive-modal/styles.css";
-import { Modal } from "react-responsive-modal";
-import MovieInfo from "../movie-info/movie-info";
 import React from "react";
+import PropTypes from "prop-types";
+
+// Components
+import { Modal } from "react-responsive-modal";
+import RowMoviesItem from "../row-movies-item/row-movies-item";
+import MovieInfo from "../movie-info/movie-info";
 import MovieService from "../../services/movie-service";
 import Loader from "../loader/loader";
 import Error from "../error/error";
@@ -100,3 +103,8 @@ const Content = ({ movies, onOpen }) => (
     ))}
   </div>
 );
+
+Content.propTypes = {
+  movies: PropTypes.array,
+  onOpen: PropTypes.func,
+};
