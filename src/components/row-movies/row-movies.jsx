@@ -1,6 +1,6 @@
 import "./row-movies.scss";
 import "react-responsive-modal/styles.css";
-import React from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 // Components
@@ -11,88 +11,84 @@ import MovieService from "../../services/movie-service";
 import Loader from "../loader/loader";
 import Error from "../error/error";
 
-class RowMovies extends React.Component {
-  state = {
-    open: false,
-    movies: [],
-    movieID: null,
-    loading: true,
-    error: false,
-    page: 2,
-    newItemLoading: false,
+const RowMovies = () => {
+  const [open, setOpen] = useState(false);
+  const [movies, setMovies] = useState([]);
+  const [movieID, setMovieID] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [page, setPage] = useState(2);
+  const [newItemLoading, setNewItemLoading] = useState(false);
+
+  const movieService = new MovieService();
+
+  useEffect(() => {
+    getTrandingMovies();
+  }, []);
+
+  const onOpen = (id) => {
+    setMovieID(id);
+    setOpen(true);
   };
 
-  movieService = new MovieService();
+  const onClose = () => {
+    setOpen(false);
+  };
 
-  componentDidMount() {
-    this.getTrandingMovies();
-  }
-
-  getTrandingMovies = (page) =>
-    this.movieService
+  const getTrandingMovies = (page) =>
+    movieService
       .getTrandingMovies(page)
-      .then((res) => {
-        this.setState(({ movies }) => ({ movies: [...movies, ...res] }));
-      })
-      .catch(() => this.setState({ error: true }))
-      .finally(() => this.setState({ loading: false, newItemLoading: false }));
+      .then((res) => setMovies((movies) => [...movies, ...res]))
+      .catch(() => setError(true))
+      .finally(() => {
+        setLoading(false);
+        setNewItemLoading(false);
+      });
 
-  getMoreMovies = () => {
-    this.setState(({ page }) => ({ page: page + 1, newItemLoading: true }));
-    this.getTrandingMovies(this.state.page);
+  const getMoreMovies = () => {
+    setNewItemLoading(true);
+    setPage((page) => page + 1);
+    getTrandingMovies(page);
   };
 
-  onOpen = (id) => {
-    this.setState({ open: true, movieID: id });
-  };
+  const loadingContent = loading ? <Loader /> : null;
+  const errorContent = error ? <Error /> : null;
+  const content = !(loading || error) ? (
+    <Content movies={movies} onOpen={onOpen} />
+  ) : null;
 
-  onClose = () => {
-    this.setState({ open: false });
-  };
-
-  render() {
-    const { open, movies, movieID, loading, error, newItemLoading } =
-      this.state;
-
-    const loadingContent = loading ? <Loader /> : null;
-    const errorContent = error ? <Error /> : null;
-    const content = !(loading || error) ? (
-      <Content movies={movies} onOpen={this.onOpen} />
-    ) : null;
-
-    return (
-      <div className="rowmovies">
-        <div className="rowmovies__top">
-          <div className="rowmovies__top-title">
-            <img src="./tranding.svg" alt="rowmovies__top-title" />
-            <h1>Tranding</h1>
-          </div>
-
-          <div className="hr"></div>
-          <a href="#">See more</a>
+  return (
+    <div className="rowmovies">
+      <div className="rowmovies__top">
+        <div className="rowmovies__top-title">
+          <img src="./tranding.svg" alt="rowmovies__top-title" />
+          <h1>Tranding</h1>
         </div>
 
-        {loadingContent}
-        {errorContent}
-        {content}
-
-        <div className="rowmovies__loadmore">
-          <button
-            className="btn btn__secondary"
-            onClick={this.getMoreMovies}
-            disabled={newItemLoading}
-          >
-            Load more
-          </button>
-        </div>
-
-        <Modal open={open} onClose={this.onClose}>
-          <MovieInfo movieID={movieID} />
-        </Modal>
+        <div className="hr"></div>
+        <a href="#">See more</a>
       </div>
-    );
-  }
-}
+
+      {loadingContent}
+      {errorContent}
+      {content}
+
+      <div className="rowmovies__loadmore">
+        <button
+          className="btn btn__secondary"
+          onClick={getMoreMovies}
+          disabled={newItemLoading}
+        >
+          Load more
+        </button>
+      </div>
+
+      <Modal open={open} onClose={onClose}>
+        <MovieInfo movieID={movieID} />
+      </Modal>
+    </div>
+  );
+};
 
 export default RowMovies;
 
