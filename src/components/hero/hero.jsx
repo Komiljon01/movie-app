@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import Loader from "../loader/loader";
 import Error from "../error/error";
 import useMovieService from "../../services/movie-service";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const [movie, setMovie] = useState(null);
@@ -39,7 +40,6 @@ const Hero = () => {
           <button className="btn btn__secondary" onClick={updateMovie}>
             Random Movie
           </button>
-          <button className="btn btn__primary">Details</button>
         </div>
       </div>
       <div className="hero__movie">
@@ -53,22 +53,30 @@ const Hero = () => {
 
 export default Hero;
 
-const Content = ({ movie }) => (
-  <>
-    <img src={movie.backdrop_path} alt={movie.name} />
+const Content = ({ movie }) => {
+  const navigate = useNavigate();
+  return (
+    <>
+      <img src={movie.backdrop_path} alt={movie.name} />
 
-    <div className="hero__movie-descr">
-      <h2>{movie.name}</h2>
-      <p>
-        {movie.describtion && movie.describtion.length > 200
-          ? `${movie.describtion.slice(0, 200)}...`
-          : movie.describtion}
-      </p>
+      <div className="hero__movie-descr">
+        <h2>{movie.name}</h2>
+        <p>
+          {movie.describtion && movie.describtion.length > 200
+            ? `${movie.describtion.slice(0, 200)}...`
+            : movie.describtion}
+        </p>
 
-      <button className="btn btn__primary">Details</button>
-    </div>
-  </>
-);
+        <button
+          className="btn btn__primary"
+          onClick={() => navigate(`/movie/${movie.id}`)}
+        >
+          Details
+        </button>
+      </div>
+    </>
+  );
+};
 
 Content.propTypes = {
   movie: PropTypes.object,

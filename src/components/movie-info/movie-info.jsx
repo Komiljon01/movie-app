@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import Loader from "../loader/loader";
 import Error from "../error/error";
 import useMovieService from "../../services/movie-service";
+import { useNavigate } from "react-router-dom";
 
 const MovieInfo = ({ movieID }) => {
   const [movie, setMovie] = useState(null);
@@ -45,15 +46,24 @@ MovieInfo.propTypes = {
 
 export default MovieInfo;
 
-const Content = ({ movie }) => (
-  <>
-    <img src={movie.poster_path} alt={movie.name} />
-    <div className="movieinfo__descr">
-      <h1>{movie.name}</h1>
-      <p>{movie.describtion}</p>
-    </div>
-  </>
-);
+const Content = ({ movie }) => {
+  const navigate = useNavigate();
+  return (
+    <>
+      <img src={movie.poster_path} alt={movie.name} />
+      <div className="movieinfo__descr">
+        <h1>{movie.name}</h1>
+        <p>{movie.describtion}</p>
+        <button
+          className="btn btn__dark"
+          onClick={() => navigate(`/movie/${movie.id}`)}
+        >
+          Details
+        </button>
+      </div>
+    </>
+  );
+};
 
 Content.propTypes = {
   movie: PropTypes.object,
