@@ -7,23 +7,21 @@ import PropTypes from "prop-types";
 import { Modal } from "react-responsive-modal";
 import RowMoviesItem from "../row-movies-item/row-movies-item";
 import MovieInfo from "../movie-info/movie-info";
-import MovieService from "../../services/movie-service";
 import Loader from "../loader/loader";
 import Error from "../error/error";
+import useMovieService from "../../services/movie-service";
 
 const RowMovies = () => {
   const [open, setOpen] = useState(false);
   const [movies, setMovies] = useState([]);
   const [movieID, setMovieID] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [page, setPage] = useState(2);
   const [newItemLoading, setNewItemLoading] = useState(false);
 
-  const movieService = new MovieService();
+  const { getTrandingMovies, loading, error } = useMovieService();
 
   useEffect(() => {
-    getTrandingMovies();
+    getMovies();
   }, []);
 
   const onOpen = (id) => {
@@ -35,20 +33,16 @@ const RowMovies = () => {
     setOpen(false);
   };
 
-  const getTrandingMovies = (page) =>
-    movieService
-      .getTrandingMovies(page)
+  const getMovies = (page) => {
+    getTrandingMovies(page)
       .then((res) => setMovies((movies) => [...movies, ...res]))
-      .catch(() => setError(true))
-      .finally(() => {
-        setLoading(false);
-        setNewItemLoading(false);
-      });
+      .finally(() => setNewItemLoading(false));
+  };
 
   const getMoreMovies = () => {
     setNewItemLoading(true);
     setPage((page) => page + 1);
-    getTrandingMovies(page);
+    getMovies(page);
   };
 
   const loadingContent = loading ? <Loader /> : null;

@@ -3,16 +3,14 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 // Components
-import MovieService from "../../services/movie-service";
 import Loader from "../loader/loader";
 import Error from "../error/error";
+import useMovieService from "../../services/movie-service";
 
 const MovieInfo = ({ movieID }) => {
   const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
-  const movieService = new MovieService();
+  const { getDetailedMovie, loading, error } = useMovieService();
 
   useEffect(() => {
     updateMovie();
@@ -21,23 +19,19 @@ const MovieInfo = ({ movieID }) => {
   const updateMovie = () => {
     if (!movieID) return;
 
-    setLoading(true);
-
-    movieService
-      .getDetailedMovie(movieID)
-      .then((res) => setMovie(res))
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
+    getDetailedMovie(movieID).then((res) => setMovie(res));
   };
 
+  const initialContent = movie || loading || error ? null : <Loader />;
   const loadingContent = loading ? <Loader /> : null;
   const errorContent = error ? <Error /> : null;
-  const content = !(loadingContent || errorContent) ? (
+  const content = !(loading || error || !movie) ? (
     <Content movie={movie} />
   ) : null;
 
   return (
     <div className="movieinfo">
+      {initialContent}
       {loadingContent}
       {errorContent}
       {content}

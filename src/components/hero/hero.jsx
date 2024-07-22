@@ -1,30 +1,22 @@
 import "./hero.scss";
-import "../../styles/button.scss";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 // Components
-import MovieService from "../../services/movie-service";
 import Loader from "../loader/loader";
 import Error from "../error/error";
+import useMovieService from "../../services/movie-service";
 
 const Hero = () => {
   const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
-  const movieService = new MovieService();
+  const { getRandomMovie, loading, error, clearError } = useMovieService();
 
   useEffect(() => updateMovie(), []);
 
   const updateMovie = () => {
-    setLoading(true);
-
-    movieService
-      .getRandomMovie()
-      .then((res) => setMovie(res))
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
+    clearError();
+    getRandomMovie().then((res) => setMovie(res));
   };
 
   const loadingContent = loading ? <Loader /> : null;
