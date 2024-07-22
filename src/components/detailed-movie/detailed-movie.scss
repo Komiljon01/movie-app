@@ -1,0 +1,36 @@
+.detailedmovie {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: 30% 40%;
+  gap: 50px;
+  align-items: center;
+
+  &__img img {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  &__descr {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    &-info {
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      img {
+        width: 15px;
+      }
+
+      .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 100%;
+        background: red;
+      }
+    }
+  }
+}

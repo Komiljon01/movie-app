@@ -1,6 +1,7 @@
 // Components
 import HomePage from "../../pages/home-page";
-import TvPage from "../../pages/tv-page";
+import TrendingPage from "../../pages/trending-page";
+import PopularPage from "../../pages/popular-page";
 import DetailedPage from "../../pages/detailed-page";
 import NotFoundPage from "../../pages/not-found-page";
 import Navbar from "../navbar/navbar";
@@ -12,7 +13,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/tv" element={<TvPage />} />
+        <Route path="/trending" element={<TrendingPage />} />
+        <Route path="/popular" element={<PopularPage />} />
         <Route path="/movie/:movieID" element={<DetailedPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

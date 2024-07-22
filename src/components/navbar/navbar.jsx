@@ -2,6 +2,7 @@ import "./navbar.scss";
 import logo from "/logo.svg";
 import logoText from "/logo-text.svg";
 import { Link, NavLink } from "react-router-dom";
+import { navbarLinks } from "../../constants";
 
 const Navbar = () => {
   return (
@@ -15,22 +16,16 @@ const Navbar = () => {
 
       <div className="navbar__menu">
         <ul>
-          <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/tv"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Tv Shows
-            </NavLink>
-          </li>
+          {navbarLinks.map((link) => (
+            <li key={link.route}>
+              <NavLink
+                to={link.route}
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                {link.label}
+              </NavLink>
+            </li>
+          ))}
         </ul>
       </div>
     </nav>

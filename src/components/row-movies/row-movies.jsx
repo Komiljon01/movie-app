@@ -10,6 +10,7 @@ import MovieInfo from "../movie-info/movie-info";
 import Loader from "../loader/loader";
 import Error from "../error/error";
 import useMovieService from "../../services/movie-service";
+import { useLocation } from "react-router-dom";
 
 const RowMovies = () => {
   const [open, setOpen] = useState(false);
@@ -18,7 +19,12 @@ const RowMovies = () => {
   const [page, setPage] = useState(2);
   const [newItemLoading, setNewItemLoading] = useState(false);
 
-  const { getTrandingMovies, loading, error } = useMovieService();
+  const { pathname } = useLocation();
+
+  console.log(pathname);
+
+  const { getTrendingMovies, getPopularMovies, loading, error } =
+    useMovieService();
 
   useEffect(() => {
     getMovies();
@@ -34,9 +40,15 @@ const RowMovies = () => {
   };
 
   const getMovies = (page) => {
-    getTrandingMovies(page)
-      .then((res) => setMovies((movies) => [...movies, ...res]))
-      .finally(() => setNewItemLoading(false));
+    if (pathname === "/popular") {
+      getPopularMovies(page)
+        .then((res) => setMovies((movies) => [...movies, ...res]))
+        .finally(() => setNewItemLoading(false));
+    } else {
+      getTrendingMovies(page)
+        .then((res) => setMovies((movies) => [...movies, ...res]))
+        .finally(() => setNewItemLoading(false));
+    }
   };
 
   const getMoreMovies = () => {
@@ -56,7 +68,7 @@ const RowMovies = () => {
       <div className="rowmovies__top">
         <div className="rowmovies__top-title">
           <img src="./tranding.svg" alt="rowmovies__top-title" />
-          <h1>Tranding</h1>
+          <h1>{pathname === "/popular" ? "Popular" : "Trending"}</h1>
         </div>
 
         <div className="hr"></div>

@@ -22,7 +22,9 @@ const Hero = () => {
 
   const loadingContent = loading ? <Loader /> : null;
   const errorContent = error ? <Error /> : null;
-  const content = !(loading || error) ? <Content movie={movie} /> : null;
+  const content = !(loading || error || !movie) ? (
+    <Content movie={movie} />
+  ) : null;
 
   return (
     <section className="hero">
