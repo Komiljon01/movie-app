@@ -21,8 +21,6 @@ const RowMovies = () => {
 
   const { pathname } = useLocation();
 
-  console.log(pathname);
-
   const { getTrendingMovies, getPopularMovies, loading, error } =
     useMovieService();
 
@@ -72,7 +70,6 @@ const RowMovies = () => {
         </div>
 
         <div className="hr"></div>
-        <a href="#">See more</a>
       </div>
 
       {loadingContent}
